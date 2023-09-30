@@ -4,7 +4,14 @@ public class Main {
     static char F = '%';
     static int width = 10;
     static int height = 10;
-    static char[] board = new char[width*height];
+    static char[] board;
+
+    static void start(){
+        board = new char[width*height];
+        for (int i = 0; i < board.length; i++) {
+            board[i] = G;
+        }
+    }
 
     static int[] nearby(int x){
         int[] val = new int[8];
@@ -17,6 +24,18 @@ public class Main {
             }
         }
         return val;
+    }
+
+    static void spreadFire(){
+        for (int i = 0; i < board.length; i++) {
+            if (board[i] == F){
+                board[i] = G;
+                int[] neighbors = nearby(i);
+                for (int j = 0; j < neighbors.length; j++) {
+                    if (board[j] == T) board[j] = F;
+                }
+            }
+        }
     }
 
     public static void main(String[] args) {

@@ -1,3 +1,5 @@
+import java.util.Random;
+
 public class Main {
     static char T = '.';
     static char G = ' ';
@@ -36,6 +38,17 @@ public class Main {
                 }
             }
         }
+    }
+
+    static void growTrees(float treePercent, Random rng){
+        for (int i = 0; i < board.length; i++) {
+            if (rng.nextFloat() <= treePercent) board[i] = T;
+        }
+    }
+
+    static void startFire(int location){
+        location %= board.length;
+        board[location] = F;
     }
 
     public static void main(String[] args) {

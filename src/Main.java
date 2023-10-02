@@ -2,11 +2,14 @@ import java.awt.*;
 import java.util.Random;
 
 public class Main {
+
+    static int width = 20;
+    static int height = 10;
+    static float treeGenRate = 100f/height;
+
     static char T = '.';
     static char G = ' ';
     static char F = '%';
-    static int width = 10;
-    static int height = 10;
     static char[] board;
 
     static void start(){
@@ -48,6 +51,7 @@ public class Main {
     }
 
     static void startFire(int location){
+        if (location < 0) location *= -1;
         location %= board.length;
         board[location] = F;
     }
@@ -57,7 +61,7 @@ public class Main {
         for (int i = 0; i < board.length; i++) {
             if (board[i] == T) win.setPixelColor(x, y, Color.GREEN);
             else if (board[i] == G) win.setPixelColor(x, y, Color.BLUE);
-            else win.setPixelColor(x, y, Color.red);
+            else win.setPixelColor(x, y, Color.RED);
 
             x++;
             if (x == width){
@@ -65,9 +69,18 @@ public class Main {
                 y += 1;
             }
         }
+        win.repaint();
     }
 
     public static void main(String[] args) {
-
+        start();
+        PixelWindow window = new PixelWindow(width, height);
+        Random random = new Random();
+        while (true){
+            drawBoard(window);
+            spreadFire();
+            growTrees(0.001f, random);
+            startFire(random.nextInt());
+        }
     }
 }

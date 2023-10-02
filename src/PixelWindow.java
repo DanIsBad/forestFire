@@ -10,7 +10,7 @@ public class PixelWindow extends JFrame {
     private final BufferedImage image;
 
     public PixelWindow(int width, int height) {
-        super("Pixel Window");
+        super("");
 
         image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 

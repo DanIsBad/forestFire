@@ -1,3 +1,4 @@
+import java.awt.*;
 import java.util.Random;
 
 public class Main {
@@ -49,6 +50,21 @@ public class Main {
     static void startFire(int location){
         location %= board.length;
         board[location] = F;
+    }
+
+    static void drawBoard(PixelWindow win) {
+        int x = 0, y = 0;
+        for (int i = 0; i < board.length; i++) {
+            if (board[i] == T) win.setPixelColor(x, y, Color.GREEN);
+            else if (board[i] == G) win.setPixelColor(x, y, Color.BLUE);
+            else win.setPixelColor(x, y, Color.red);
+
+            x++;
+            if (x == width){
+                x = 0;
+                y += 1;
+            }
+        }
     }
 
     public static void main(String[] args) {

@@ -7,7 +7,6 @@ public class Main {
 
     static int width = 1600 + 2;
     static int height = 900 + 2;
-    static float treeGenRate = 100f/height;
 
     static char T = 'T';
     static char G = 'G';

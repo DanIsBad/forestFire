@@ -5,17 +5,18 @@ import java.util.Scanner;
 
 public class Main {
 
-    static int width = 1600 + 2;
-    static int height = 900 + 2;
+    static int width = 700 + 2;
+    static int height = 350 + 2;
 
-    static char T = 'T';
-    static char G = 'G';
-    static char F = 'F';
-    static char NF;
-    static char[] board;
+    static byte T = 'T';
+    static byte S = 'S';
+    static byte G = 'G';
+    static byte F = 'F';
+    static byte NF;
+    static byte[] board;
 
     static void start(){
-        board = new char[width*height];
+        board = new byte[width*height];
         for (int i = 0; i < board.length; i++) {
             board[i] = G;
         }
@@ -101,14 +102,14 @@ public class Main {
         start();
         PixelWindow window = new PixelWindow(width, height);
         Random random = new Random();
-        Scanner scanner = new Scanner(System.in);
+//        Scanner scanner = new Scanner(System.in);
         growTrees(1f, random);
-        board[554] = F;
         while (true){
             drawBoard(window);
             clearOutline();
             spreadFire();
             startFire(random.nextInt());
+            growTrees(0.02f, random);
         }
     }
 }

@@ -5,14 +5,14 @@ import java.util.Scanner;
 
 public class Main {
 
-    static int width = 700 + 2;
-    static int height = 350 + 2;
+    static int width = 1600;
+    static int height = 900;
+    static int fireRate = 30;
+    static int maxTreeHealth = 10;
 
-    static byte T = 'T';
-    static byte S = 'S';
-    static byte G = 'G';
-    static byte F = 'F';
-    static byte NF;
+    static byte G = 0;
+    static byte F = 1;
+    static byte NF = 127;
     static byte[] board;
 
     static void start(){
@@ -41,7 +41,8 @@ public class Main {
                 board[i] = G;
                 int[] neighbors = nearby(i);
                 for (int j = 0; j < neighbors.length; j++) {
-                    if (board[neighbors[j]] == T) board[neighbors[j]] = NF;
+                    if (board[neighbors[j]] > 1) board[neighbors[j]]--;
+                    if (board[neighbors[j]] == 1) board[neighbors[j]] = NF;
                 }
             }
         }
@@ -52,7 +53,7 @@ public class Main {
 
     static void growTrees(float treePercent, Random rng){
         for (int i = 0; i < board.length; i++) {
-            if (rng.nextFloat() <= treePercent) board[i] = T;
+            if (rng.nextFloat() <= treePercent && board[i] < maxTreeHealth) board[i] += 2;
         }
     }
 
@@ -63,10 +64,13 @@ public class Main {
         for (int i = width - 1; i < width*height; i+=width) board[i] = G;
     }
 
-    static void startFire(int location){
-        if (location < 0) location *= -1;
-        location %= board.length;
-        board[location] = F;
+    static void startFire(Random random){
+        for (int i = 0; i < fireRate; i++) {
+            int x = random.nextInt();
+            if (x < 0) x *= -1;
+            x %= board.length;
+            board[x] = F;
+        }
     }
 
     static void printBoard(){
@@ -80,10 +84,13 @@ public class Main {
 
     static void drawBoard(PixelWindow win) {
         int x = 0, y = 0;
-        for (int i = 0; i < board.length; i++) {
-            if (board[i] == T) win.setPixelColor(x, y, Color.GREEN);
+        for (int i = board.length - 1; i >= 0; i--) {
+            if (board[i] == F) win.setPixelColor(x, y, Color.RED);
             else if (board[i] == G) win.setPixelColor(x, y, Color.BLUE);
-            else win.setPixelColor(x, y, Color.RED);
+            else {
+                if (board[i] > 20) board[i] = 20;
+                win.setPixelColor(x, y, new Color(0, 255, board[i] * 10));
+            }
 
             x++;
             if (x == width){
@@ -95,21 +102,23 @@ public class Main {
     }
 
     static void spacePressed(){
-        Arrays.fill(board, T);
+        Arrays.fill(board, (byte)2);
     }
 
     public static void main(String[] args) {
         start();
         PixelWindow window = new PixelWindow(width, height);
         Random random = new Random();
-//        Scanner scanner = new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in);
         growTrees(1f, random);
         while (true){
-            drawBoard(window);
             clearOutline();
+            drawBoard(window);
+//            printBoard();
+//            scanner.next();
             spreadFire();
-            startFire(random.nextInt());
-            growTrees(0.02f, random);
+            startFire(random);
+//            growTrees(0.1f, random);
         }
     }
 }

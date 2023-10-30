@@ -5,8 +5,8 @@ import java.util.Scanner;
 
 public class Main {
 
-    static int width = 700 + 2;
-    static int height = 350 + 2;
+    static int width = 160 + 2;
+    static int height = 90 + 2;
 
     static byte T = 'T';
     static byte S = 'S';
@@ -100,7 +100,7 @@ public class Main {
 
     public static void main(String[] args) {
         start();
-        PixelWindow window = new PixelWindow(width, height);
+        PixelWindow window = new PixelWindow(width * PixelWindow.size, height * PixelWindow.size);
         Random random = new Random();
 //        Scanner scanner = new Scanner(System.in);
         growTrees(1f, random);

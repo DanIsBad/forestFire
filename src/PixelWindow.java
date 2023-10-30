@@ -9,6 +9,7 @@ import javax.swing.JFrame;
 
 public class PixelWindow extends JFrame {
 
+    public final static int size = 10;
     private final BufferedImage image;
 
     KeyListener keyListener;
@@ -50,7 +51,14 @@ public class PixelWindow extends JFrame {
     }
 
     public void setPixelColor(int x, int y, Color color) {
-        image.setRGB(x, y, color.getRGB());
+        int xcon = x * size + size;
+        int ycon = y * size + size;
+        for (int i = x * size; i < xcon; i++) {
+            for (int j = y * size; j < ycon; j++) {
+                image.setRGB(i, j, color.getRGB());
+//                System.out.println(i + " " + j);
+            }
+        }
     }
 
     @Override
